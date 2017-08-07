@@ -7,3 +7,35 @@ Migrate NE details view
 	+Implementation Proposal:
 	+Backend services:
 	+PM Counter:
+	+Alarm:
+	+PM data:
+-Grid views:
+	+LT Card View: Fecthing the LT Cards with only required LT Card information, the associated CPs
+and the ONT count, e.i: only the hight level information not deep
+	+SCG view: Fetch the SCGs with only required SCG information, the associated CPs and the ONT count,
+i.e: only the high level information not to deep
+	+ONT view: Scope the ONTs, on a per "PON Port" / per "SCG". Slipt the call from the GUI. First fetch 
+	only list of the "PON Port" and "SCG", just the friendly names. Then for each of theses further fetch 
+	the related ONTs and update GUI in a progressive manner.
+-Column Views:
+	The navigation is defined as progessive, i.e the ONTs will be shown for the selected "PON PORT" or "LT"
+or "CP" or "SCG"
+-Implementation:
+	+Web Gui directly fetch data from relevant db:
+		* Alarm data such as: alarm count, list. from elastic search
+		* PM data such as for: graph, from opentsdb
+	+Old implement fetch data from backend services
+	+New implement:
+		* Web gui fetch from different sources
+		* Update the existing backend servcies to fetch all data and respond to web GUI
+	+Recommendation to update the backend services:
+		* Update DMA models for each of the objects to include the alarm and PM counter/attributes
+		* Update each of the web gui components to show the values correctly.
+==>Handle the data in the web gui to render the view page with pm data
+==>Req: Update the backend service
+*What's thing to know to working with the User story 2?
+-Working with the opentsdb: query, put (basic know)
+-Testing knowleage: automation, unit test, mock framework (bacsic know)
+-Handle the metrics dataponit from onpentsdb on Web gui (none clearly)
+-The backend database: PM data, alarm count.... (unknow)
+-The angular js, chart js (learning 10%)
