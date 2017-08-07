@@ -1,0 +1,194 @@
+-Karaf là gì?
+-Karaf dùng để làm gì?
+-Cài đặt và cấu hình karaf?
+-Feature và Bundle là gì?
+-Sử dụng karaf?
+----------------------------------------
+-OSGi(Open Services Gateway Initiative): định nghĩa một kiến trúc phụ vụ cho việc triển khai và phát triển
+các mo-dun và thư viện của một ứng dụng.
+-OSGi application: là một tập hợp các OSGi bundle, và một OSGi bundle là một tập tin jar bình thường có chứa
+MAINIFEST 
+-Karaf là một OSGi nhẹ, mạnh mẽ và linh hoạt; được sử dụng như một container độc lập, hỗ trợ nhiều công nghệ và ứng dụng.
+-----------------------------------------
+-Karaf Feature: là một thực thể có thể install/uninstall
+-Một Karaf Feature chứa các thông tin sau:
++Tên
++Phiên bản
++Miêu tả
++Mộ tập hợp các bundles
++Cấu hình tùy chọn hoặc tập tin cấu hình
++Tập hợp các feature phụ thuộc: 
+-Các phụ thuộc feature: một feature có thể thể định nghĩa các feature khác mà nó cần
+-Các lệnh Feature:
+-Điều kiện: có thể định nghĩa những điều kiện tiên quyết cho mỗi feature
+	+feature:repo-list (liệt kê tất cả các kho feature đã được được đăng ký)
+	+feature:repo-add <name/url> (đăng ký một kho feature, phiên bản mới nhất)
+	+feature:repo-add cellar <version> (đăng ký một kho feature xác định)
+	+feature:repo-refresh (làm mới các feature được đăng ký)
+	+feature:repo-repo-refresh <name/url> (làm mới một feature xác định)
+	+feature:repo-remove <name/url> (xóa một feature)
+	+feature:repo-install <name/version> (cài đặt một feature cụ thể)
+	+feature:start <name/version> (khởi động một feature cụ thể)
+	+feature:stop <name/version> (Dừng một feature cụ thể)
+	+feature:uninstall <name/version> (Dỡ cài đặt một feature cụ thể)
+-Hot deploy: kéo thả một tập tin xml feature vào thư mục deploy và karaf sẽ tự động tải và cài
+đặt các feature được liệt kê
+-Tạo một feature cụ thể, dùng maven với các option:
+mvn archetype:generate
+	-DarchetypeGoroupId=
+	-DarchetypeArtifactId=
+	-DarchetypeVersion=
+	-DgorupId=
+	-Dartifactid=
+	-Dversion=
+-------------------------------------------
+Tạo OSGi bundle:
+-OSGi bundle là một tập tin JAR có chứa siêu dữ liệu(MAINIFEST), Java classes và những tài nguyên khác.
+-Cú pháp tạo một bundle: dùng maven để tạo một bụ khung cho OSGi project với các option:
+mvn archetype:generate
+	-DarchetypeGoroupId=
+	-DarchetypeArtifactId=
+	-DarchetypeVersion=
+	-DgorupId=
+	-Dartifactid=
+	-Dversion=
+	-Dpackage=
+-Cài đặt một bundle bằng lệnh như sau:
+	shell>bundle:install mvn:<group-name>/<bundle-name>/<version>
+-Hot-deploy: copy tập tin jar đến thư mục deploy
+-------------------------------------------
+-Các tính năng karaf cung cấp:
++Hot develoyment: Karaf sẽ tự động phát hiện kiểu tập tin và deloy
++Complete console: Karaf cung cấp một Unix-like console và là nơi để quản lý các container
++Dynamic configuration: Karaf cung cấp nhiều câu lệnh phụ vụ cho việc quản lý và cấu hình, các tập tin cấu hình 
+đều được lưu trong thư mục etc và mọi thay đổi sẽ được tự động tìm thấy và nạp lại.
++Advanced logging systen: Karaf hỗ trợ nhiều framework loggin phổ biến như: log4j, slf4j...Dù sử dụng logging framework
+nào thì tấp cả đều được cấu hình và trong duy nhất một tập tin.
++Provisioning: Hỗ trợ người dùng cài đặt nhiều ứng dụng cần thiết cho việc phát triển như: Maven, Http...
++Management: Karaf là một enterprise-reday container, cung cấp việc quản lý các chỉ số, và tiến trình thông quan JMX
++Remote: Có thể điều khiển từ xa thông qua ssh server
++Security: Karaf hoàn toàn bảo mật dựa trên JAAS và cung cấp cơ chế RBAC (Role-Based Access Control) cho console và truy 
+cập JMX
++Instances: Có thể quản lý nhiều instances từ một instances chính(root)
+--------------------------------------------
+-Cài đặt: giải nén tập tin nhị phân và thiết lập biến môi trường làm việc(KARAF_HOME)
++KARAF_HOME=/home/lny/softs/apache-karaf-4.0.1
++KARAF_DATA=/home/lny/softs/apache-karaf-4.0.1/data
++KARAF_ETC=/home/lny/softs/apache-karaf-4.0.1/etc
+
+-Karaf yêu cầu JAVA SE 7 hoặc JAVA SE 8 để chạy
+-Khởi động server trên linux console:(đã thiết lập KARAF_HOME) 
+	shell>karaf
+-Nhấn tab để hiện các lệnh sẵn có
+-Nhấn [cmd] --help để hiện trợ giúp cho một lệnh xác định
+-Nhấn ctr-d hoặc system:shutdown hoặc logout để tắt Karaf
+
+-Khởi động karaf: Regular, Server, Background
++Regular: shell>karaf (tương tác với shell)
++Server: shell>karaf server (chạy như một tiến trình, có thể kết nối qua ssh hoặc client)
++Background: shell>start (chạy như một tiến trình nền, không tương tác với shell, có thể kết nối qua ssh hoặc client)
+-Kết nối: sử dụng lệnh client
+	  shell>status
+-Tắt: shell>shutdown -h
+	  shell>shutdown -f
+	  shell>system:shutdown 10
+-Kiểm tra trạng thái: dùng lệnh status
+	  shell>status
+-Khởi động lại:
+       shell>system:shutdown -r
+	   shell>system:shutdown --restart
+
+-----------------------------------------------
+-Các thư mục trong Karaf:
++bin: chứa các scripts cơ bản như: start, stop, login...
++data: thư mục làm việc
++deploy:tập tin thực thi
++etc: chứa các tập tin cấu hình
++instances: chứa các instances con của karaf
++log: chứa log file
++demos: chứa các ví dụ karaf đơn giản
++lib: chứa các thư viện cần thiết
++system: chứa các kho OSGi bundle, và kho của Maven
+-----------------------------------------------
+-Khi karaf khởi động có thể có thể truy câp từ xa thông qua ssh
+-Kết nối từ xa thông qua ssh sử dụng cổng mặc định 8101
+-Tập tin cấu hình cho việc kết nối được lưu trong: etc/org.apache.karaf.shell.cfg
+-Tập tin xác thực người dùng được lưu trong: etc/users.properties
+-----------------------------------------------
+Làm viêc với Karaf:
+-Tạo bundle:
+-Tạo feature:
+-Giao tiếp giữa các bundle
+-Quản lý service
+-Bao đóng với cellar
+-Đóng gói
+------------------------------------------------
+Quản lý và cấu hình log:
+-Các log framework hỗ trợ:
++OSGi Log Service
++Apache Log4j
++Apache Commons Logging
++Logback
++Java Util Logging
+-Tập tin cấu hình log cho karaf:etc/org.ops4j.pax.logging.cfg
+-Cấu hình log động thông qua lệnh:
+	+log:clear
+	+log:display
+	+log:exception-display
+	+log:get
+	+log:log
+	+log:set
+	+log:tail
+---------------------------------------------------
+Quản lý và cấu hình karaf:
+-Tập tin cấu hình karaf:etc/org.apache.karaf.shell.cfg
+-Karaf tự động load tất cả các tập tin *.cfg trong etc
+-Có thể xác định hành vi cho các tập tin cấu hính thông qua: etc/config.properties
+-Karaf có thể được cấu hình động thông qua dòng lênh: config:*
+	+config:list
+	+config:edit
+	+config:delete
+	+config:meta
+	....
+-----------------------------------------------------
+Đóng gói:(Packing)
+-Sử dụng zip tool với những tập tin phụ thuộc
+-Sử dụng maven:
+mvn archetype:generate
+	-DarchetypeGoroupId=
+	-DarchetypeArtifactId=
+	-DarchetypeVersion=
+	-DgorupId=
+	-Dartifactid=
+	-Dversion=
+Sau đó chạy lệnh mvn:run install sẽ tạo được tập tin kar
+-Sử dụng kar:create <repository-name> [features]
+Tập tin KAR
+-Mộ tập tin KAR chứa một tập hợp các miêu tả feature và bundle jar
+-Một tập tain KAR chứa thư mục repositories, trong thư mục repositories chứa:
+	+Tập hợp các tập tin XML
+	+Thư mục chứa các artifact mavnen
+-Cài đặt tập tin kar:
++Sử dụng kar:install mvn:<group-id>/<artifact-id>/<version>/kar 
++Sử dụng host-deploy: sao chép tập tin kar và thư mục deploy
+-----------------------------------------------------
+Karaf Instances
+-Một instances là một karaf runtime và tách biệt với những thứ khác.
+-Mỗi instances sẽ chạy trên những JVM riêng biệt
+-Quản lý các instances thông qua dòng lệnh:
+	+instance:create <name>(tạo mới một instance container)
+	+instance:clone <name> <cloneName> (clone một container cụ thể)
+	+instance:start <name> (khởi động một instance container)
+	+instance:list (liệt kê trạng thái của các instance hiện tại)
+	+instance:status <name> (xem trạng thái của một instance cụ thể)
+	+instance:connect <name> (kết nối tới một instance đang chạy)
+	+instance:stop <name> (dừng một instance xác định)
+	+instance:destrou <name> (dùng và xóa một container cụ thể)
+--------------------------------------------------------
+
+
+	
+
+
+
+

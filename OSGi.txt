@@ -1,0 +1,20 @@
+-OSGi (Open Service Gateway Initiative) is a Java Framework for developing and deploying modular
+software program and libraries.
+-OSGi has two partts. The first parts is a specifiaction for modular compoments called bundles,
+which are commonly refered to as plug-ins. The specifiaction defines an infrastructure for bundle's
+life cycle and determines how bundles will interact. The second part of OSGi is a virtual machine(JVM)
+-level service registry that bundles can use to push, discover and bind to services-oriented architecture.
+-OSGi, created for Java systems, provides a framework for modular systems. OSGi makes it possible to define
+the dependencies of ech individual module with the others and enables users to control the lifecycle and 
+dynamically change each component of system.On the deploymen stage, each OSGi bundle is a jar file. But the 
+main different of bundle java files with regular ones can be counted as the OSGi specific manifest definition 
+adn some OSGi specific classes.
+-A bundle is a jar file with some special infomation in its manifest that identifies it, gives a version, and 
+specifies dependencies.
+-What's software modularity?
+	An application consists of different parts, these are typically called software components or software modules.
+ The components interact with each other via a Application Programing Interface (API). The API is defined as a set
+ of classes and methods which can be uesed from other components. A component also has set of classes and methods which
+ are considered as internal to the software component.
+ component exits and works correctly.
+	If a component uses an API from other component, it has a dependency to the other componet..ie.,it requires the other

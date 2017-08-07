@@ -1,0 +1,12 @@
+--------------------------------------------------
+-Clone EE-Eviroment
+git clone ssh://$CSL@gerrit.app.alcatel-lucent.com:29418/FNMS/ee-environment 
+-Check out
+cd ee-environment
+git checkout 1.3.1-int-NAC-FNMS-10702-NAC
+-Check out on new branch
+./ee-environment/boxes/common-box/anvGit nac git clone checkout 1.3.1-int-NAC-FNMS-10702-NAC
+=>Replace other brach for new clone
+---------------------------------------------------
+*Build and Run:
+base-controller>controller-

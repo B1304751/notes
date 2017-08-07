@@ -1,0 +1,33 @@
+[AxS]Tóm tắt quy ước
+1. Tập tin mã nguồn:
+-Không được vượt quá 900 dòng
+-Mỗi dòng không được quá 140 ký tự
+-Phải bắt đầu bằng đoạn chú thích > lệnh package > lệnh import > lệnh khai báo và khởi tạo
+-Thụt dòng phải dùng 4 space, tab phải đúng 4 space
+-Ngắt dòng sau dấu phẩy hoặc toán tử
+-Căn cùng lề cho những dòng cùng cấp
+2. Chú thích
+-Chú thích trên nhiều dòng nên bắt đầu và kết thúc bằng dòng rỗng
+-Chú thích trên 1 dòng: nên ở cuối dòng, ngắn gọn, dễ hiểu
+3.Khai báo và khởi tạo
+-Nên khai báo trên từng dòng tách biệt
+-Phần khai báo nên là phần bắt đầu của mỗi khối lệnh
+-Nên khởi tạo biến cục bộ tại nên được khai báo
+-Không nên khởi tạo giá trị cho biến nếu giá trị phụ thuộc vào một số việc tính toán khác
+-Giữa tên phương thức và dấu ngoặc đơn và danh sách tham số không nên có space
+-Nên đặt dấu { là phần cuối cùng của việc khai báo
+-Nên đặt khoảng cách là 1 dòng cho những phương thức khác nhau
+4. Blank line và Blank space
+-Giữa hai phần của một file mã nguồn, hoặc định nghĩa class và interface nên được phân tách bởi 2 dòng rỗng
+-Bắt đầu khối lệnh, giữa 2 biến cục bộ, nên đặt 1 dòng rỗng
+-Nên có khoảng trống sau dấu phẩy trong khi khai  báo danh sách các tham số
+-Nên tách biệt cách tất cả các toán tử bởi một ký tự khoảng trống
+-Nên có khoảng trống khi ép kiểu dữ liệu
+5. Quy ước đặt tên
+-Tên class, interface nên là danh từ, ngắn gọn dễ hiểu và viết hoa ký tự đầu tiên, nên sử dụng toàn bộ từ hạn chế 
+viết tắt
+-Tên phương thức nên là động từ, ký tự đầu tiên nên viết thường
+-Tên biến nên bắt đầu với tiền tố là m_, viết thường ký tự đầu tiên, nên ngắn gọn dễ hiểu
+-Biến tạm cho số nguyên nên đặt: i, j, k, m, n; cho ký tự nên là : c, d, e
+-Tên hằng nên viết hoa và phân cách bởi dấu gạch dưới("_")
+

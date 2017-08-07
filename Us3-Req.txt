@@ -1,0 +1,9 @@
+Migrate NE details view
+-Relevant PM Counters:
+	+gponOltSidePonUtilTxOntPmIntervalOntName - To show the rank numbers within the ONTs
+	+gponOltSidePonUtilTxPmIntervalTotalUtil - To show the left/right arrows for the CPs/PONPorts
+	+gponOltSidePonUtilRxPmIntervalTotalUtil - To show the left/right arrows for the CPs/PONPorts
+-Implementation Proposal:
+	+Implementation Proposal:
+	+Backend services:
+	+PM Counter:

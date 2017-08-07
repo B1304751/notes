@@ -1,0 +1,27 @@
+*Source file:
+-<900 lines on file
+-Starting with comment > package > import > declare
+-<140 characters on line
+-indentation 4 spaces
+*Comments
+-Using block comment
+-Using end-of-line comment
+*Declaration
+-one declare per one line
+-delare at begin of block
+-no spaces between method and parameter in class and interface
+-open brace at the end of declare
+-method separated by blank line
+
+*Initialization
+*Blank lines
+-two blank line: class and interface, between each section
+-one blank line: method, local variable, and first statement, before block
+*Blank space
+-blank space after comma in parameter list
+-between operator should have a blank space
+-using a blank space for casts anything
+*Naming conventions
+-Class + Interface: using noun and capital first letter, avoid acronymns
+-Method: using verbs and lowercase
+-Variable: m_prefix for field and static field, lowercase, short, meaningfull

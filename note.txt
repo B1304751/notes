@@ -1,0 +1,46 @@
+
+1.welcome
+
+2. fixing issue stuff
+
+
+install  :
+jdk 8  : JAVA_HOME and JRE_HOME
+
+
+eclipse (lunar, mar ..)
+
+mysql or mariadb ( SQL) : good ( interacted into xampp)
+
+proxy ( in eclipse )  firefox, chrome
+
+tools maven : set env : MAVEN_HOME
+
+set up proxy in maven : located setting.xml 
+
+: How to create maven project in eclipse.
+
+build maven 
+import the existed maven project into eclipse
+
+------------------- go out.
+Tomorrow :
+searching maven
+
+build
+mvn eclipse:eclipse
+dependence
+
++ remaind Viet to send plan for training.
+
+
+d
+
+
+workbean
+---------------------------------------------------------------------------------
+http://tiger.in.alcatel-lucent.com:8090/display/EPG/Setup+Development+Environment
+
+
+
+

@@ -1,0 +1,10 @@
+Opentsdb:
+-What is opentsdb:
+-OpenTSDB: The Scalable Time Series Database
+Store and server massive amounts of time series data without losing granularity.
+-How OpenTSDB is storing the data is in my opinion the biggest difference compared
+to other databases. It does support tables, but they are actually called metrics. 
+In each metric we can store data points. Each data points is structured as;
+	<timpstamp><value><tagx=tagvx>...
+-How to query data:
+-How to storing data:

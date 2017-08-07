@@ -1,0 +1,30 @@
+*AXSREQ-3927:
+-Domain: Working on main page Network Overview to reflect a few trends and summary overview of the network.
+-Main page has two part: 
+	+Port Utilization(Filter, Trend graph)
+	+High Utilization Port(Port Id, Utilization bar, Sparkline chart, Histogram bar chart, Top 5 ONTs chart)
+Having 5 port display by default and rank by: Max Utilization/Average Utilization
+-Required:
+	+Us1: send trends report of BW utilization per PON port
+	+Us2: rank port by BW utilization
+-Working on Us2:
+	+Draw: one sparkline chart (ticket FNMS_6849)
+	+Draw: one bar chart (ticket FNMS_6851)
+-More detail about two subtask:
+	+FMNS_6849: problem with the full support of the sparkline chart
+	+FNMS_6851: (Rank port histogram) 
+			+A highlith bar is a data port
+			+Number of bar of the chart: is a number of port per each NE
+			+With the bar is orderred from high to low
+*Opentsdb:
+-What's it?
+-How to it work?
+-What's a metrict?
+-What's the structure of timestamp?
+-How to working with a metric?
+*Handle data on GUI:
+-How to using Angular Controller on Web UI?
+-How to config and fetch a metric on Web UI?
+*Effort tomorrow:
+-Dummy metric data for the bar chart.
+-Highlight and handle highlith the bar char.

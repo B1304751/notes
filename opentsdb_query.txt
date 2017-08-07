@@ -1,0 +1,15 @@
+Opentsdb:
+
+-Query all metrics:
+http://192.168.95.45:4242/api/suggest?type=metrics&max=50000
+
+-Query specifics metrics: gponOltSidePonUtilRxPmIntervalTotalUtil.13.1.4.4
+
+http://192.168.95.45:8181/webfwk/pm/api/query?end=1500579000000&m=sum:gponOltSidePonUtilRxPmIntervalTotalUtil.13.1.4.4&start=1500492600000
+
+-Get current timestamp:
+shell>	date +%s
+
+-Conver timestamp to human readeable:
+shell> date -d @<timestamp>
+
