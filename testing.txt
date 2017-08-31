@@ -1,0 +1,129 @@
+/**
+	 * Set the TCA definition associated with ObjectType attribute in a PM collection model from the PM Model instantiator
+	 * @param collectorType
+	 * @param serviceType
+	 * @param family
+	 * @param objectTypes
+	 * @param threshold
+	 * @return
+	 */
+	@POST
+	@Path("/services/{collectorType}/{serviceType}/{family}/objects/attributes/threshold")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response setObjectTypeAttrTCADefinition(@PathParam("collectorType") String collectorType,
+			@PathParam("serviceType") String serviceType, @PathParam("family") String family, String objectTypeAttrTCAData) {
+	    ResponseMessage message = new ResponseMessage();
+	    Model model = m_pmCollectionModelService.getModelByUniqueKey(collectorType, family, serviceType);
+	    if (model != null) {
+	    	Threshold thresholds = new Threshold();
+			if (objectTypeAttrTCAData != null && objectTypeAttrTCAData.length() != 0) {
+			    JSONObject jsonData = new JSONObject(objectTypeAttrTCAData);
+		        JSONArray objectTypes = jsonData.getJSONArray("objectTypes");
+		        String attributes = jsonData.getString("attribute");
+		        JSONObject threshold = jsonData.getJSONObject("threshold");
+		        
+		        thresholds.setName(threshold.getString("name"));
+		        thresholds.setValue(threshold.getInt("value"));
+		        thresholds.setOperator(threshold.getString("operator"));
+		        
+		        if (objectTypes != null) {
+		        	for (int i = 0; i < objectTypes.length(); i++) {
+		        		if (objectTypes.getString(i) != null && thresholds != null && attributes != null ) {
+		        			String objectType = objectTypes.getString(i);
+		        			m_pmCollectionModelService.setObjectTypeAttrTCADefinition(serviceType, collectorType, objectType, attributes, thresholds);
+				        	message.setStatus(MessageConstant.PASS_PREFIX_RESULT);
+					        message.setReason("");
+		        		}  else {
+				        	message.setStatus(MessageConstant.FAIL_PREFIX_RESULT);
+				            message.setReason("Null threshold");
+				        }
+		        	}
+		        
+		        } else {
+		        	message.setStatus(MessageConstant.FAIL_PREFIX_RESULT);
+		            message.setReason("Null objecttype");
+		        }
+		        
+			} else {
+				message.setStatus(MessageConstant.FAIL_PREFIX_RESULT);
+	            message.setReason("Null object body");
+			}
+	    } else {
+	    	message.setStatus(MessageConstant.FAIL_PREFIX_RESULT);
+            message.setReason("Null model object");
+	    }
+		
+		
+		return Response.ok().entity(message).build();
+	}
+	
+	/**
+	 * Get the TCA Alarm definition associated with ObjectType attributes in a PM collection model from the PM Model instantiator
+	 * @param collectorType
+	 * @param serviceType
+	 * @param objectTypes
+	 * @param family
+	 * @return
+	 */
+	@GET
+	@Path("/services/{collectorType}/{serviceType}/{family}/objects/attributes/threshold")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getObjectTypeAttrTCADefinition(@PathParam("collectorType") String collectorType,
+			@PathParam("serviceType") String serviceType, @PathParam("family") String family,
+			@MatrixParam("attribute") String attribute, @MatrixParam("ObjectType") String objectType) {
+			
+			List<ObjectTypeAttrTCADefinitionVO> objectTypeAttrTCADefinitionVOList = new ArrayList();
+			List<Threshold> thresholdList = null;
+			Model model = m_pmCollectionModelService.getModelByUniqueKey(collectorType, family, serviceType);
+			if (model != null) {
+			    List<ObjectType> objectTypeList = model.getObjectTypes();
+			    for (ObjectType objectTypes : objectTypeList) {
+			    	List<ObjectTypeAttrVO> objectTypeAttrVOList = new ArrayList();
+			    	String objecTypeName = objectTypes.getObjectTypeFriendlyName();
+			    	List<Attribute> attributeList = objectTypes.getAttributes();
+			    	// if attribute is optional
+			    	if (objectTypes.getObjectTypeName().equals(objectType)) {
+			    		String counterName = attribute;
+			    		objecTypeName = objectType;
+			    		List<ThresholdVO> thresholdVOList = new ArrayList();
+			    		if (objecTypeName != null && counterName != null) {
+				    		thresholdList = m_pmCollectionModelService.getOjectTypeAttrTCADefinition(serviceType, collectorType, objecTypeName, counterName);
+				    		for (Threshold threshold : thresholdList) {
+				    			thresholdVOList.add(new ThresholdVO(threshold));
+							}
+				    		if (thresholdVOList != null) {
+				    			objectTypeAttrVOList.add(new ObjectTypeAttrVO(thresholdVOList, counterName));
+				    		}
+					    } else {
+					    	return Response.ok().entity("").build();
+					    }
+			    		ObjectTypeAttrTCADefinitionVO objectTypeAttrTCADefinitionVO = new ObjectTypeAttrTCADefinitionVO(objecTypeName, objectTypeAttrVOList);
+						objectTypeAttrTCADefinitionVOList.add(objectTypeAttrTCADefinitionVO);
+						return Response.ok().entity(objectTypeAttrTCADefinitionVOList).build();
+			    	} else { // non-optional
+			    		for (Attribute attributes : attributeList) {
+				    		String counterName = attributes.getName();
+				    		List<ThresholdVO> thresholdVOList = new ArrayList();
+				    		if (objecTypeName != null && counterName != null) {
+					    		thresholdList = m_pmCollectionModelService.getOjectTypeAttrTCADefinition(serviceType, collectorType, objecTypeName, counterName);
+					    		for (Threshold threshold : thresholdList) {
+					    			thresholdVOList.add(new ThresholdVO(threshold));
+								}
+					    		if (thresholdVOList != null) {
+					    			objectTypeAttrVOList.add(new ObjectTypeAttrVO(thresholdVOList, counterName));
+					    		}
+						    } else {
+						    	return Response.ok().entity("").build();
+						    }
+				    	}
+				    	ObjectTypeAttrTCADefinitionVO objectTypeAttrTCADefinitionVO = new ObjectTypeAttrTCADefinitionVO(objecTypeName, objectTypeAttrVOList);
+						objectTypeAttrTCADefinitionVOList.add(objectTypeAttrTCADefinitionVO);
+						return Response.ok().entity(objectTypeAttrTCADefinitionVOList).build();
+				    }
+			    }
+ 	
+			} else {
+				return Response.ok().entity("").build();
+			}
+			return Response.ok().entity(objectTypeAttrTCADefinitionVOList).build();
+		}
