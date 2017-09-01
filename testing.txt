@@ -127,3 +127,56 @@
 			}
 			return Response.ok().entity(objectTypeAttrTCADefinitionVOList).build();
 		}
+
+When we want to get the TCA definition associated with ObjectType attributes in a PM collection model from the PM Model instantiator
+API originally defined in the wiki PM - FNMS-7476 - PM Model Instantiation Service : Adaptation, CRUD, multiple models, overlapping models#FNMS-7476-PMModelInstantiationService:Adaptation,CRUD,multiplemodels,overlappingmodels-UserStory6-ProcesstheTCAinformationdefinedinthecollectionmodels
+Use the API: getObjectTypeAttrTCADefinition API
+We need a REST API for this:
+1/ Implement the REST API: 
+GET http://<epg server IP@>:8181/rest/pm/collection/models/services/{collectorType}/{serviceType}/{family}/objects/attributes/threshold
+Input: 
+collectorType, serviceType and family = identifies the model 
+collectorType =NCLive/SNMPLive(SNMPLive on NAV returns empty list)
+objectType = optional parameter that is a list of object type friendly name prefixes (for example "PON Port" and not "pon") that allows to filter the list of attributes based on object types. If the parameter is omitted, then attributes of all objectTypes in the model are returned with the tca value enabled. 
+attribute = optional parameter that allows to filter TCA definition support on an attribute(objectType optional parameter above is mandatory in this case). If the parameter is omitted, then all attributes of ObjectType are returned with the tca value enabled.
+This will return :
+[{
+    "objectType": "<objectTypeFriendlyName1>",// For example, "PON Port"
+    "attributes": [{
+        "counterName": "counterName1",// For example, "gponPonOltsideOpInfoBiasCurrent"
+        "threshold": [{
+            "name": "name1",// For example, "hsi_std_isam_sdc_pon_gponPonOltsideOpInfoBiasCurrent"
+            "value": "value1",// For example, "10"
+            "operator": "operator1"// For example, ">"
+        }]
+    }]
+},
+{
+    "objectType": "<objectTypeFriendlyName2>",
+    "attributes": [{
+        "counterName": "counterName3",
+        "threshold": [{
+            "name": "name3",
+            "value": "value3",
+            "operator": "operator3"
+        }]
+    }]},
+...
+]
+
+When we want to set the TCA definition associated with ObjectType attribute in a PM collection model from the PM Model instantiator(for e.g. TCA Manager)
+API originally defined in the wiki PM - FNMS-7476 - PM Model Instantiation Service : Adaptation, CRUD, multiple models, overlapping models#FNMS-7476-PMModelInstantiationService:Adaptation,CRUD,multiplemodels,overlappingmodels-UserStory6-ProcesstheTCAinformationdefinedinthecollectionmodels
+Use the API: setObjectTypeAttrTCADefinition API
+We need a REST API for this:
+1/ Implement the REST API: 
+POST http://<epg server IP@>:8181/rest/pm/collection/models/services/{collectorType}/{serviceType}/{family}/objects/attributes/threshold
+Input: 
+collectorType, serviceType and family = identifies the model 
+collectorType =NCLive/SNMPLive(SNMPLive on NAV returns empty list)
+objectType = parameter that is a list of object type friendly name prefixes (for example "PON Port" and not "pon") that allows to set the Threshold of attributes based on object types.  
+attribute = parameters that allows to set TCA definition support on an attribute. 
+threshold = Includes the name, value & operator fields.
+This will return :
+status
+The response would look like this:
+"<Status>" // e.g. TCA Set Success/Failure
