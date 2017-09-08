@@ -1,0 +1,41 @@
+[
+    {
+        "metric": "sum:numberOfOntOnPort.13.1.4.4{objectID=R1.S1.LT6.CP4}",
+        "tags": {
+			"objectID":"R1.S1.LT6.CP4"
+		},
+
+        "dps": {
+            "1502193600": 10
+        }
+    }
+]
+
+
+1502193600
+1000000111
+1200000000
+
+
+[‎9/‎7/‎2017 7:11 PM] Phan Hoai Quoc: 
+http://192.168.95.45:4242/api/put?details 
+[	{
+        "metric": "numberOfOntOnPort.13.1.4.4",
+       	"timestamp": 1502193600,
+        "value": 10,
+        "tags": {
+			"objectID":"R1.S1.LT6.CP4"
+			}
+    }
+	] 
+
+$http({url: CONFIG.REST_DATACHART_URLS, method: "GET", params: query}).then(function success(response) {
+               var metricValues = response.data;
+               if (metricValues.length > 0) {
+                   var totalOnt = _.values(metricValues[0].dps)[0];
+               deferred.resolve(totalOnt);
+               } else {
+                       deferred.resolve(0);
+               }
+
+=>Checking the server getTotalOnt			   

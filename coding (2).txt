@@ -1,0 +1,207 @@
+    /**
+     * Set the TCA definition associated with ObjectType attribute in a PM collection model from the PM Model instantiator
+     * 
+     * @param collectorType
+     * @param serviceType
+     * @param family
+     * @param objectTypes
+     * @param threshold
+     * @return
+     */
+    @POST
+    @Path("/services/{collectorType}/{serviceType}/{family}/objects/attributes/threshold")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response setObjectTypeAttrTCADefinition(@PathParam("collectorType") String collectorType,
+            @PathParam("serviceType") String serviceType, @PathParam("family") String family, String objectTypeAttrTCADefinitionData) {
+        ResponseMessage message = new ResponseMessage();
+        Model model = m_pmCollectionModelService.getModelByUniqueKey(collectorType, family, serviceType);
+        if (model != null) {
+            Threshold threshold = new Threshold();
+            if (objectTypeAttrTCADefinitionData != null && objectTypeAttrTCADefinitionData.length() != 0) {
+                JSONObject jsonData = new JSONObject(objectTypeAttrTCADefinitionData);
+
+                JSONArray objectTypes = jsonData.getJSONArray("objectTypes");
+                String attribute = jsonData.getString("attribute");
+                JSONObject thresholdData = jsonData.getJSONObject("threshold");
+
+                threshold.setName(thresholdData.getString("name"));
+                threshold.setValue(thresholdData.getInt("value"));
+                threshold.setOperator(thresholdData.getString("operator"));
+
+                message = m_pmCollectionModelService.setObjectTypeAttrTCADefinition(serviceType, collectorType, family, objectTypes,
+                        attribute, threshold);
+            } else {
+                message.setStatus(MessageConstant.FAIL_PREFIX_RESULT);
+                message.setReason("Null object body");
+            }
+        } else {
+            message.setStatus(MessageConstant.FAIL_PREFIX_RESULT);
+            message.setReason("Null model object");
+        }
+
+        return Response.ok().entity(message).build();
+    }
+
+    /**
+     * Get the TCA Alarm definition associated with ObjectType attributes in a PM collection model from the PM Model instantiator
+     * 
+     * @param collectorType
+     * @param serviceType
+     * @param family
+     * @param attribute
+     * @param objectType
+     * @return
+     */
+    @GET
+    @Path("/services/{collectorType}/{serviceType}/{family}/objects/attributes/threshold")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getObjectTypeAttrTCADefinition(@PathParam("serviceType") String serviceType,
+            @PathParam("collectorType") String collectorType, @PathParam("family") String family,
+            @QueryParam("objectType") List<String> objectType, @QueryParam("attribute") String attribute) {
+        List<ObjectTypeAttrTCADefinitionVO> objectTypeAttrTCADefinitionVOList = m_pmCollectionModelService
+                .getOjectTypeAttrTCADefinition(serviceType, collectorType, family, objectType, attribute);
+        return Response.ok().entity(objectTypeAttrTCADefinitionVOList).build();
+    }
+}
+
+----------------------------------------------------------------------------------------------
+
+
+    @Override
+    @Transactional(value = TxType.REQUIRED, rollbackOn = { RuntimeException.class, Exception.class })
+    public ResponseMessage setObjectTypeAttrTCADefinition(String serviceType, String collectorType, String family, JSONArray objectTypes,
+            String attribute, Threshold threshold) {
+        ResponseMessage message = new ResponseMessage();
+        if (threshold == null || attribute == null) {
+            setMessage(message, MessageConstant.FAIL_PREFIX_RESULT, "Null threshold or attribute object");
+            return message;
+        }
+        Model model = m_modelFileDAO.getModelByUniqueKey(collectorType, family, serviceType);
+        if (model != null) {
+            if (isCollectorTypeValidInLive(collectorType)) {
+                if (objectTypes != null) {
+                    for (int i = 0; i < objectTypes.length(); i++) {
+                        String objectType = objectTypes.getString(i);
+                        m_thresholdDAO.setOjectTypeAttrTCADefinition(serviceType, collectorType, objectType, attribute, threshold);
+                    }
+                    setMessage(message, MessageConstant.PASS_PREFIX_RESULT, "");
+                } else {
+                    setMessage(message, MessageConstant.FAIL_PREFIX_RESULT, "Null object type");
+                }
+            } else {
+                setMessage(message, MessageConstant.FAIL_PREFIX_RESULT, "Invalid collector type");
+            }
+        } else {
+            setMessage(message, MessageConstant.FAIL_PREFIX_RESULT, "Model does not exists");
+        }
+        return message;
+    }
+
+    @Override
+    @Transactional(value = TxType.REQUIRED, rollbackOn = { RuntimeException.class, Exception.class })
+    public List<ObjectTypeAttrTCADefinitionVO> getOjectTypeAttrTCADefinition(String serviceType, String collectorType, String family,
+            List<String> objectTypes, String attribute) {
+        Model model = m_modelFileDAO.getModelByUniqueKey(collectorType, family, serviceType);
+        List<ObjectTypeAttrTCADefinitionVO> objectTypeAttrTCADefinitionVOList = new ArrayList<>();
+        List<ObjectType> objectTypeListInDB = m_objectTypeDAO.getAllObjectType();
+        List<ObjectType> objectTypeListFilter = new ArrayList<>();
+        // filter object type by object type friendly name
+        if (!objectTypes.isEmpty()) {
+            for (ObjectType objectType : objectTypeListInDB) {
+                for (String objectTypeFriendlyName : objectTypes) {
+                    if (objectTypeFriendlyName.equals(objectType.getObjectTypeFriendlyName())) {
+                        objectTypeListFilter.add(objectType);
+                    }
+                }
+            }
+            objectTypeListInDB = new ArrayList<>(objectTypeListFilter);
+        }
+        if (model != null) {
+            if (isCollectorTypeValidInLive(collectorType)) {
+                Predicate<ObjectType> predicate = y -> {
+                    if (attribute == null) {
+                        return true;
+                    }
+                    boolean value = false;
+                    for (Attribute attr : y.getAttributes()) {
+                        value = attr.getName().equals(attribute);
+                    }
+                    return value;
+                };
+                List<ThresholdVO> thresholdVOList = new ArrayList<>();
+                List<ObjectTypeAttrVO> objectTypeAttrVOList = new ArrayList<>();
+                objectTypeListInDB.stream().filter(predicate).flatMap(x -> x.getAttributes().stream()).forEach(x -> {
+                    List<Threshold> thresholdList = m_thresholdDAO.getOjectTypeAttrTCADefinition(serviceType, collectorType,
+                            x.getObjectType().getObjectTypeFriendlyName(), x.getName());
+                    thresholdList.forEach(y -> thresholdVOList.add(new ThresholdVO(y)));
+                    objectTypeAttrVOList.add(new ObjectTypeAttrVO(thresholdVOList, x.getName()));
+                    ObjectTypeAttrTCADefinitionVO objectTypeAttrTCADefinitionVO = new ObjectTypeAttrTCADefinitionVO(
+                            x.getObjectType().getObjectTypeFriendlyName(), objectTypeAttrVOList);
+                    objectTypeAttrTCADefinitionVOList.add(objectTypeAttrTCADefinitionVO);
+                });
+            } else {
+                LOGGER.error(null, "Invalid collector type");
+            }
+        } else {
+            LOGGER.error(null, "Model does not exists");
+        }
+        return objectTypeAttrTCADefinitionVOList;
+    }
+
+---------------------------------------------------------------------------------------------------------------------
+
+    ResponseMessage setObjectTypeAttrTCADefinition(String serviceType, String collectorType, String family, JSONArray objectType,
+            String counterName, Threshold threshold);
+
+    List<ObjectTypeAttrTCADefinitionVO> getOjectTypeAttrTCADefinition(String serviceType, String collectorType, String family,
+            List<String> objectType, String attribute);
+}
+
+-----------------------------------------------------------------------------------------------------------------------
+
+    @Test
+    public void testSetObjectTypeAttrTCADefinition() {
+        ResponseMessage message = new ResponseMessage();
+        message.setStatus("Pass");
+        message.setReason("");
+        JSONArray objectType = new JSONArray();
+        objectType.put(0, "Pon Port");
+        objectType.put(1, "Chanel Group Port");
+        Threshold threshold = new Threshold();
+        threshold.setName("hsi_std_isam_sdc_pon_gponPonOltsideOpInfoBiasCurrent");
+        threshold.setValue(800);
+        threshold.setOperator(">");
+
+        String objectTypeAttrTCADefinition = "{\"objectTypes\": [\"Pon Port\", \"Chanel Group Port\"],\"attribute\": \"text\",\"threshold\": {\"name\": \"hsi_std_isam_sdc_pon_gponPonOltsideOpInfoBiasCurrent\",\"value\": 800,\"operator\": \">\"}}";
+        when(m_collectionModelService.setObjectTypeAttrTCADefinition(COLLECTOR_TYPE, SERVICE_TYPE, FAMILY, objectType, COUNTER_NAME,
+                threshold)).thenReturn(message);
+        Response actual = m_modelResources.setObjectTypeAttrTCADefinition(SERVICE_TYPE, COLLECTOR_TYPE, FAMILY,
+                objectTypeAttrTCADefinition);
+        assertEquals(200, actual.getStatus());
+    }
+
+    @Test
+    public void testSetObjectTypeAttrTCADefinitionWithErrors() {
+        ResponseMessage message = new ResponseMessage();
+        message.setStatus("Fail");
+        message.setReason("");
+        JSONArray objectType = null;
+        Threshold threshold = null;
+        String objectTypeAttrTCADefinition = null;
+
+        when(m_collectionModelService.setObjectTypeAttrTCADefinition(COLLECTOR_TYPE, SERVICE_TYPE, FAMILY, objectType, COUNTER_NAME,
+                threshold)).thenReturn(message);
+        Response actual = m_modelResources.setObjectTypeAttrTCADefinition(SERVICE_TYPE, COLLECTOR_TYPE, FAMILY,
+                objectTypeAttrTCADefinition);
+        assertEquals(200, actual.getStatus());
+    }
+
+    @Test
+    public void testGetObjectTypeAttrTCADefinition() {
+        List<String> objectType = new ArrayList<>();
+        objectType.add("Pon Port");
+        objectType.add("Chanel Group Port");
+        String attribute = "gponPonOltsideOpInfoBiasCurrent";
+        Response actual = m_modelResources.getObjectTypeAttrTCADefinition(COLLECTOR_TYPE, SERVICE_TYPE, FAMILY, objectType, attribute);
+        assertEquals(200, actual.getStatus());
+    }

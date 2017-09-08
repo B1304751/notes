@@ -18,7 +18,7 @@ i.e: only the high level information not to deep
 	only list of the "PON Port" and "SCG", just the friendly names. Then for each of theses further fetch 
 	the related ONTs and update GUI in a progressive manner.
 -Column Views:
-	The navigation is defined as progessive, i.e the ONTs will be shown for the selected "PON PORT" or "LT"
+	The navigation is defined as progessive, i.e the ONTs iwll be shown for the selected "PON PORT" or "LT"
 or "CP" or "SCG"
 -Implementation:
 	+Web Gui directly fetch data from relevant db:

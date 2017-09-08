@@ -7,6 +7,18 @@ http://192.168.95.45:4242/api/suggest?type=metrics&max=50000
 
 http://192.168.95.45:8181/webfwk/pm/api/query?end=1500579000000&m=sum:gponOltSidePonUtilRxPmIntervalTotalUtil.13.1.4.4&start=1500492600000
 
+-Post new metrics
+http://192.168.95.45:4242/api/put?details 
+[	{
+        "metric": "numberOfOntOnPort.13.1.4.4",
+       	"timestamp": 1502193600,
+        "value": 12,
+        "tags": {
+			"objectID":"R1.S1.LT8.CP4"
+			}
+    }
+] 
+
 -Get current timestamp:
 shell>	date +%s
 

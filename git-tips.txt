@@ -1,0 +1,46 @@
+-Git basic
++Initializing a Repository in an Existing Directory
+	git init
++Cloning an Existing Repository
+	git clone git://github.com/schacon/grit.git
++Checking the Status of Your Files
+	git status
++Tracking New Files
+	git add <file-name>
++Know exactly what you changed
+	git diff
+	git diff --cached (to see what you’ve staged so far:)
++Committing Your Changes
+	git commit
++Commit message inline
+	git commit -m "Story 182: Fix benchmarks for speed"
++Viewing the Commit History
+	git log
++One of the more helpful options is -p, which shows the diff introduced in each commit. You can also use -2, which limits the output to only the last two entries:
+	git log -p -2
++You can also use a series of summarizing options with git log. For example, if you want to see some abbreviated stats for each commit, you can use the --stat option:
+	git log --stat
++Using a GUI to Visualize History
+	gitk
++Unstaging a Staged File
+	git reset HEAD benchmarks.rb
++Unmodifying a Modified File
+	git checkout -- benchmarks.rb
++Showing Your Remotes
+	git remote -v
++Adding Remote Repositories
+	git remote add pb git://github.com/paulboone/ticgit.git
++Fetching and Pulling from Your Remotes
+	git fetch [remote-name]
++Automatically fetch and then merge a remote branch into your current branch
+	git pull
++Pushing to Your Remotes
+	git push origin master
++Inspecting a Remote
+	git remote show origin
++Removing and Renaming Remotes
+	git remote rename pb paul
+	git remote rm paul
+-Git advanced
+
+	

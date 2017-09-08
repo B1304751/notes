@@ -1,0 +1,8 @@
+A Web Service is can be defined by following ways:
+    + is a client server application or application component for communication.
+    + method of communication between two devices over network.
+    + is a software system for interoperable machine to machine communication.
+    + is a collection of standards or protocols for exchanging information between two devices or application.
+There are mainly two types of web services.
+    + SOAP web services.
+    + RESTful web services.

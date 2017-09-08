@@ -1,0 +1,62 @@
+http://192.168.92.129:8181/rest/pm/collection/models/threshold/alarm?alarmTypeId=gponPonOltsideOpInfoTxOpticalSignalLevel-threshold-crossed-alarm&perceivedSeverity=critical&serviceAffecting=N
+
+http://192.168.92.129:8181/rest/pm/collection/models/threshold/alarm/gponPonOltsideOpInfoTxOpticalSignalLevel-threshold-crossed-alarm
+
+http://192.168.92.129:8181/rest/pm/collection/models/rest/pm/collection/models/services/hsi/SNMPLive/pon/gponPonOltsideOpInfoTemp/objects/attributes/threshold
+
+http://192.168.92.129:8181/rest/pm/collection/models/services/hsi/SNMPLive/pon/gponPonOltsideOpInfoTemp/attributes/threshold?thresholdName="abc"&thresholdValue=1&thresholdOperator=">"
+
+{
+	"threshold": [
+		{
+			"name": "hsi_std_isam_sdc_pon_gponPonOltsideOpInfoTemp",
+			"value": 8000,
+			"operator": ">"
+		}
+	],
+	"objects": "pon",
+	"attributes": "gponPonOltsideOpInfoTemp"
+}
+
+{
+	"name": "hsi_std_isam_sdc_pon_gponPonOltsideOpInfoBiasCurrent",
+	"value": 800,
+	"operator": ">"
+}
+
+{
+	"threshold": {
+		"name": "hsi_std_isam_sdc_pon_gponPonOltsideOpInfoBiasCurrent",
+		"value": 800,
+		"operator": ">"	
+	},
+	"objectTypes": "text"
+}
+
+[
+    {
+        "objectTypes": "text",
+        "attributes": {
+            "counterName": "text",
+            "thresholds": {
+                "operator": ">",
+                "name": "hsi_std_isam_sdc_pon_gponPonOltsideOpInfoBiasCurrent",
+                "value": 800
+            }
+        }
+    }
+]
+
+{
+	"threshold": {
+		"name": "hsi_std_isam_sdc_pon_gponPonOltsideOpInfoBiasCurrent",
+		"value": 800,
+		"operator": ">"	
+	},
+	"objectTypes": {
+		"name": "text"
+	},
+	"attributes": {
+		"name": "text"
+	}
+}

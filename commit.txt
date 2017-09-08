@@ -1,0 +1,31 @@
+-Commit ticket
+git commit -m "jira FNMS-xxx - message" - commit specific files
+
+-Jenkein webpage
+http://135.249.45.251:8080/  (jenkin)
+
+-Check sonar
+export MAVEN_OPTS='-Xms2048m -Xmx3572m -XX:PermSize=512m -XX:MaxPermSize=512m -Dhttp.proxyHost=192.168.92.76 -Dhttp.proxyPort=9876'
+mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.1.1:sonar -Dsonar.host.url=http://bamboo.in.alcatel-lucent.com:8085 -Dsonar.profile.java=AMS -Dsonar.analysis.mode=preview -Dsonar.issuesReport.html.enable=true -Dsonar.dynamicAnalysis=false -Dsonar.issuesReport.console.enable=true | grep 'No new issue' | wc -l 
+
+export MAVEN_OPTS='-Xms2048m -Xmx3572m -XX:PermSize=512m -XX:MaxPermSize=512m -Dhttp.proxyHost=192.168.107.39 -Dhttp.proxyPort=9876'
+mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.1.1:sonar -Dsonar.host.url=http://bamboo.in.alcatel-lucent.com:8085 -Dsonar.profile.java=AMS -Dsonar.analysis.mode=preview -Dsonar.issuesReport.html.enable=true -Dsonar.dynamicAnalysis=false -Dsonar.issuesReport.console.enable=true 
+
+-Example commit title syntax
+jira FNMS-14571 - REST API to call addAlarmDefinition
+jira FNMS-13594 - Merge feature FNMS-9873 Collection Models maintenance & all blueprints coverage
+jira FNMS-15131 - Exported to CSV has wrong data in Excell sheet at High utilization of NU
+
+-Handle git conflict commit
+git stash -u
+git pull --rebase
+>Handle conflict
+git stash pop
+
+-Fix bug comment:
+Root cause:  redundant attribute after Network ID
+Solution: comment the redundant attribute
+
+export OPENTSDB_URL=http://192.168.95.45:4242
+
+
